@@ -1,17 +1,28 @@
-# Jogo de Rodadas
+Claro! Aqui está uma explicação detalhada sobre o jogo:
 
-## Descrição do Jogo
-Um jogo interativo onde o jogador enfrenta desafios a cada rodada, tentando sobreviver até o final.
+### Descrição do Jogo
+Você é um estudante do IFNMG enfrentando desafios ao longo de um ano letivo dividido em três trimestres. O objetivo é acumular pontos suficientes em cada trimestre para passar para o próximo. Cada trimestre possui um limite de pontos e uma média necessária que você deve alcançar.
 
-## Regras
-- O jogador tem 100 de vida, 10 de força e 50 de recursos.
-- Em cada rodada, o jogador pode enfrentar inimigos, encontrar baús ou treinar.
-- O jogo termina quando o jogador atinge 0 de vida ou completa todas as rodadas.
+### Regras
+1. **Trimestres**: O jogo é dividido em três trimestres:
+   - **Primeiro Trimestre**: Máximo de 30 pontos, média de 18 pontos.
+   - **Segundo Trimestre**: Máximo de 35 pontos, média de 21 pontos.
+   - **Terceiro Trimestre**: Máximo de 35 pontos, média de 21 pontos.
 
-## Como jogar
-1. Abra o console do navegador.
-2. Execute o comando `start()` para iniciar o jogo.
-3. Acompanhe os desafios e suas características a cada rodada.
+2. **Rodadas**: O jogador enfrentará 10 rodadas por trimestre. O jogo termina quando você atinge a média necessária ou se sua vida chegar a zero.
 
-## Autores
-Seu Nome Completo
+3. **Vida**: Começa com 100 pontos. Se sua vida chegar a zero, você perde o jogo.
+
+4. **Desafios**: A cada rodada, você enfrentará desafios que podem afetar sua vida, força ou pontos acumulados:
+   - Provas e trabalhos, que podem resultar em ganho ou perda de pontos.
+   - Decisões que influenciam sua vida e progresso, como colar em provas ou ajudar amigos.
+
+5. **Passagem de Fase**: Ao final de cada trimestre, você deve verificar se atingiu a média necessária. Se sim, pode optar por continuar para o próximo trimestre. Se não, o jogo termina.
+
+### Como Jogar
+1. **Iniciar o Jogo**: Execute o comando `start()` no console do navegador.
+2. **Interação**: A interação ocorre através de prompts que perguntam se você deseja realizar determinadas ações.
+3. **Acompanhamento**: O console exibe suas estatísticas, como vida, força e pontos acumulados a cada rodada.
+
+### Autore
+Adriano
