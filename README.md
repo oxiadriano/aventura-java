@@ -1,18 +1,17 @@
-# aventura-java
-
-# Aventura Heroica
-
-**Autores**: Adriano Miranda
+# Jogo de Rodadas
 
 ## Descrição do Jogo
-Neste jogo, você controla um(a) herói(na) em uma aventura épica para derrotar um inimigo maligno. Ao longo do caminho, você enfrentará desafios que afetarão suas características, como vida, força e recursos.
+Um jogo interativo onde o jogador enfrenta desafios a cada rodada, tentando sobreviver até o final.
 
 ## Regras
-- Você começa com um certo nível de vida, força e recursos.
-- A cada rodada, você enfrentará um desafio que poderá alterar suas características.
-- O jogo termina quando você chega ao final das rodadas VIVO.
+- O jogador tem 100 de vida, 10 de força e 50 de recursos.
+- Em cada rodada, o jogador pode enfrentar inimigos, encontrar baús ou treinar.
+- O jogo termina quando o jogador atinge 0 de vida ou completa todas as rodadas.
 
-## Como Jogar
-- Execute o jogo no console do navegador com o comando `iniciarJogo()`.
-- Siga as instruções que aparecerão no console a cada rodada.
+## Como jogar
+1. Abra o console do navegador.
+2. Execute o comando `start()` para iniciar o jogo.
+3. Acompanhe os desafios e suas características a cada rodada.
 
+## Autores
+Seu Nome Completo

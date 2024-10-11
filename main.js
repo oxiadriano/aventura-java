@@ -1,58 +1,60 @@
-let jogador = {
-    nome: "",
-    vida: 100,
-    forca: 50,
-    recursos: 20,
-};
-
-function mostrarStatus() {
-    console.log(`Status Atual de ${jogador.nome}:`);
-    console.log(`Vida: ${jogador.vida}`);
-    console.log(`Força: ${jogador.forca}`);
-    console.log(`Recursos: ${jogador.recursos}`);
-}
-
-function desafio() {
-    let resultado = Math.random();
-    if (resultado < 0.5) {
-        let dano = Math.floor(Math.random() * 20);
-        jogador.vida -= dano;
-        console.log(`${jogador.nome} enfrentou um desafio e perdeu ${dano} de vida!`);
-    } else {
-        let ganho = Math.floor(Math.random() * 15);
-        jogador.recursos += ganho;
-        console.log(`${jogador.nome} superou o desafio e ganhou ${ganho} recursos!`);
-    }
-    mostrarStatus();
-}
+let vida = 100;
+let forca = 10;
+let recurso = 50;
+const totalRodadas = 5;
+let rodadaAtual = 0;
 
 function start() {
-    // Pergunta o nome do jogador
-    jogador.nome = prompt("Qual é o seu nome, aventureiro?");
-    if (!jogador.nome) {
-        jogador.nome = "Aventureiro Desconhecido";
-    }
-
-    console.log(`O jogo começou! Bem-vindo, ${jogador.nome}! Prepare-se para a aventura!`);
-    mostrarStatus();
-
-    // Loop para os dias da aventura
-    for (let i = 0; i < 5; i++) {
-        let continuar = confirm(`Deseja avançar para o próximo dia? (Dia ${i + 1})`);
-        if (!continuar) {
-            console.log(`${jogador.nome} decidiu pausar a aventura. Fim do jogo.`);
-            return;
-        }
-        
-        desafio();
-
-        // Verifica se o jogador foi derrotado
-        if (jogador.vida <= 0) {
-            console.log(`${jogador.nome} foi derrotado. Fim do jogo.`);
-            return;
-        }
-    }
-    console.log(`${jogador.nome} completou a aventura com sucesso!`);
+    console.log("O jogo começou! Você tem que sobreviver a " + totalRodadas + " rodadas.");
+    proximaRodada();
 }
 
-// Para iniciar o jogo, digite `start()` no console do navegador.
+function proximaRodada() {
+    if (rodadaAtual < totalRodadas) {
+        console.log(`Rodada ${rodadaAtual + 1}`);
+        console.log(`Vida: ${vida}, Força: ${forca}, Recurso: ${recurso}`);
+        
+        // Desafios aleatórios
+        let desafio = Math.floor(Math.random() * 3);
+        enfrentarDesafio(desafio);
+        
+        rodadaAtual++;
+        proximaRodada();
+    } else {
+        console.log("Jogo terminado!");
+        if (vida > 0) {
+            console.log("Parabéns! Você venceu!");
+        } else {
+            console.log("Você foi derrotado...");
+        }
+    }
+}
+
+function enfrentarDesafio(desafio) {
+    switch (desafio) {
+        case 0:
+            console.log("Você encontrou um inimigo!");
+            let dano = Math.floor(Math.random() * 30);
+            vida -= dano;
+            console.log("Você perdeu " + dano + " de vida.");
+            break;
+        case 1:
+            console.log("Você encontrou um baú!");
+            let ganho = Math.floor(Math.random() * 20);
+            recurso += ganho;
+            console.log("Você ganhou " + ganho + " de recursos.");
+            break;
+        case 2:
+            console.log("Você treinou e aumentou sua força!");
+            let aumento = Math.floor(Math.random() * 5);
+            forca += aumento;
+            console.log("Sua força aumentou em " + aumento + ".");
+            break;
+    }
+    
+    if (vida <= 0) {
+        console.log("Você morreu!");
+    }
+}
+
+// Para iniciar o jogo, execute start() no console do navegador.
