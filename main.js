@@ -1,8 +1,8 @@
 let vida = 100;
 let forca = 10;
 let pontosNoAnoLetivo = 0;
-const maxPontos = [30, 35, 35]; // Pontos máximos para cada trimestre
-const mediaTrimestre = [18, 21, 21]; // Médias necessárias para passar
+const maxPontos = [40, 40, 40]; // Pontos máximos para cada trimestre
+const mediaTrimestre = [30, 21, 21]; // Médias necessárias para passar
 const totalRodadasPorTrimestre = 10; // Total de rodadas por trimestre
 let rodadaAtual = 0;
 let faseAtual = 0; // Para acompanhar o trimestre
@@ -19,19 +19,19 @@ function start() {
 }
 
 function proximaRodada() {
-    while (pontosNoAnoLetivo < maxPontos[faseAtual] && vida > 0) {
+    while (vida > 0) {
         console.log(`\nRodada ${rodadaAtual + 1} - Trimestre ${faseAtual + 1}`);
         console.log(`Vida: ${vida}, Força: ${forca}, Pontos no ano letivo: ${pontosNoAnoLetivo}`);
 
-        let desafio = Math.floor(Math.random() * 7);
-        enfrentarDesafio(desafio);
-
-        if (vida <= 0) {
-            console.log("Você foi derrotado durante o ano letivo! Jogo terminado.");
-            return; // Termina o jogo se a vida chegar a zero
-        }
-
         if (pontosNoAnoLetivo < maxPontos[faseAtual]) {
+            let desafio = Math.floor(Math.random() * 7);
+            enfrentarDesafio(desafio);
+
+            if (vida <= 0) {
+                console.log("Você foi derrotado durante o ano letivo! Jogo terminado.");
+                return; // Termina o jogo se a vida chegar a zero
+            }
+
             const continuar = prompt("Você quer enfrentar o próximo desafio? (s/n)");
             if (continuar && continuar.toLowerCase() === 'n') {
                 console.log("Você decidiu sair do jogo. Até mais, estudante!");
@@ -39,9 +39,50 @@ function proximaRodada() {
             }
             rodadaAtual++;
         }
+
+        // Verifica se já atingiu a média para passar de fase
+        if (pontosNoAnoLetivo >= mediaTrimestre[faseAtual]) {
+            enfrentarBoss(); // Enfrenta o boss ao final do trimestre
+            return; // Encerra o loop após enfrentar o boss
+        }
+    }
+}
+
+function enfrentarBoss() {
+    console.log(`\nVocê enfrentou o Boss do Trimestre ${faseAtual + 1}!`);
+    const vidaBoss = 50; // Vida do boss
+    let vidaDoBoss = vidaBoss;
+
+    while (vidaDoBoss > 0 && vida > 0) {
+        console.log(`Vida do Boss: ${vidaDoBoss}, Sua vida: ${vida}`);
+        const acao = prompt("Você quer atacar ou se defender? (a/d)");
+
+        if (acao && acao.toLowerCase() === 'a') {
+            const dano = Math.floor(Math.random() * forca) + 1;
+            vidaDoBoss -= dano;
+            console.log(`Você atacou o boss e causou ${dano} de dano!`);
+        } else if (acao && acao.toLowerCase() === 'd') {
+            console.log("Você se defendeu e reduziu o dano do próximo ataque.");
+            continue; // Volta para o início do loop
+        } else {
+            console.log("Ação inválida, você perdeu a vez.");
+        }
+
+        // Ataque do boss
+        const danoBoss = Math.floor(Math.random() * 20) + 1; // Boss causa até 20 de dano
+        vida -= danoBoss;
+        console.log(`O boss atacou e causou ${danoBoss} de dano!`);
     }
 
-    verificarMedia(); // Verifica a média ao final do trimestre
+    if (vida <= 0) {
+        console.log("Você foi derrotado pelo boss! Jogo terminado.");
+    } else {
+        console.log("Você derrotou o boss! Parabéns!");
+        faseAtual++;
+        pontosNoAnoLetivo = 0; // Reinicia os pontos para o próximo trimestre
+        rodadaAtual = 0; // Reseta a contagem de rodadas
+        proximaRodada();
+    }
 }
 
 function verificarMedia() {
@@ -49,25 +90,29 @@ function verificarMedia() {
 
     if (pontosNoAnoLetivo >= mediaTrimestre[faseAtual]) {
         console.log("Parabéns! Você alcançou a média e passou para o próximo trimestre.");
-        if (faseAtual < maxPontos.length - 1) {
-            const continuar = prompt("Você quer ir para a próxima fase? (s/n)");
-            if (continuar && continuar.toLowerCase() === 's') {
-                faseAtual++;
-                pontosNoAnoLetivo = 0; // Reinicia os pontos para o próximo trimestre
-                rodadaAtual = 0; // Reseta a contagem de rodadas
-                proximaRodada();
-            } else {
-                console.log("Você decidiu desistir. Jogo terminado.");
-            }
-        } else {
-            console.log("Você completou todos os trimestres! Parabéns!");
-        }
+        faseAtual++;
+        pontosNoAnoLetivo = 0; // Reinicia os pontos para o próximo trimestre
+        rodadaAtual = 0; // Reseta a contagem de rodadas
+        proximaRodada();
     } else {
-        console.log("Você não alcançou a média. Jogo terminado.");
+        console.log("Você não alcançou a média. Você terá que fazer uma prova de recuperação.");
+
+        const passarRecuperacao = Math.random() < 0.6; // 60% de chance de passar
+
+        if (passarRecuperacao) {
+            console.log("Você passou na prova de recuperação! Parabéns, você pode continuar.");
+            faseAtual++;
+            pontosNoAnoLetivo = 0; // Reinicia os pontos para o próximo trimestre
+            rodadaAtual = 0; // Reseta a contagem de rodadas
+            proximaRodada();
+        } else {
+            console.log("Você não passou na prova de recuperação. Jogo terminado.");
+        }
     }
 }
 
 function enfrentarDesafio(desafio) {
+    let pontosGanho = 0;
     switch (desafio) {
         case 0:
             console.log("Você teve uma prova difícil!");
@@ -75,8 +120,7 @@ function enfrentarDesafio(desafio) {
             if (estudar && estudar.toLowerCase() === 's') {
                 const chanceDeSucesso = Math.random();
                 if (chanceDeSucesso > 0.2) {
-                    const pontosGanho = Math.floor(Math.random() * 10) + 1;
-                    pontosNoAnoLetivo = Math.min(pontosNoAnoLetivo + pontosGanho, maxPontos[faseAtual]);
+                    pontosGanho = Math.floor(Math.random() * 5) + 1; // Ganha entre 1 e 5 pontos
                     console.log(`Você estudou e ganhou ${pontosGanho} pontos!`);
                 } else {
                     const dano = Math.floor(Math.random() * 10);
@@ -89,8 +133,7 @@ function enfrentarDesafio(desafio) {
                 if (colar && colar.toLowerCase() === 's') {
                     const chanceDeColar = Math.random();
                     if (chanceDeColar > 0.5) {
-                        const pontosGanho = Math.floor(Math.random() * 10) + 1;
-                        pontosNoAnoLetivo = Math.min(pontosNoAnoLetivo + pontosGanho, maxPontos[faseAtual]);
+                        pontosGanho = Math.floor(Math.random() * 5) + 1; // Ganha entre 1 e 5 pontos
                         console.log(`Você conseguiu colar e ganhou ${pontosGanho} pontos!`);
                     } else {
                         const penalidade = Math.floor(Math.random() * 30);
@@ -110,9 +153,8 @@ function enfrentarDesafio(desafio) {
             if (participarTrabalho && participarTrabalho.toLowerCase() === 's') {
                 const chanceDeSucesso = Math.random();
                 if (chanceDeSucesso > 0.3) {
-                    const ganho = 7; // Pontos fixos para trabalho
-                    pontosNoAnoLetivo = Math.min(pontosNoAnoLetivo + ganho, maxPontos[faseAtual]);
-                    console.log(`Você participou do trabalho e ganhou ${ganho} pontos!`);
+                    pontosGanho = Math.floor(Math.random() * 5) + 1; // Ganha entre 1 e 5 pontos
+                    console.log(`Você participou do trabalho e ganhou ${pontosGanho} pontos!`);
                 } else {
                     const penalidade = Math.floor(Math.random() * 15);
                     vida -= penalidade;
@@ -148,26 +190,24 @@ function enfrentarDesafio(desafio) {
                 console.log("Você decidiu não ajudar.");
             }
             break;
-
-        case 5:
+        case 4:
             console.log("Você se distraiu jogando videogame e perdeu tempo!");
-            const perdaDeTempo = Math.floor(Math.random() * 20);
+            const perdaDeTempo = Math.floor(Math.random() * 10);
             vida -= perdaDeTempo;
             console.log(`Você perdeu ${perdaDeTempo} de vida por se distrair.`);
             break;
-        case 6:
+        case 5:
             console.log("Você encontrou um livro de dicas para os estudos!");
             const lerLivro = prompt("Você quer estudar o livro? (s/n)");
             if (lerLivro && lerLivro.toLowerCase() === 's') {
-                const pontosGanho = Math.floor(Math.random() * 10) + 1;
-                pontosNoAnoLetivo = Math.min(pontosNoAnoLetivo + pontosGanho, maxPontos[faseAtual]);
+                pontosGanho = Math.floor(Math.random() * 5) + 1; // Ganha entre 1 e 5 pontos
                 console.log(`Você estudou o livro e ganhou ${pontosGanho} pontos!`);
             } else {
                 console.log("Você decidiu não estudar o livro.");
             }
             break;
     }
-
+    pontosNoAnoLetivo = Math.min(pontosNoAnoLetivo + pontosGanho, maxPontos[faseAtual]); // Limita os pontos acumulados
     if (vida <= 0) {
         console.log("Você não conseguiu sobreviver ao ano letivo...");
     }
